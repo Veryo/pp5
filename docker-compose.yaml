@@ -1,0 +1,29 @@
+services:
+  ng-frontend:
+    image: veryo/front:latest
+    container_name: fron
+    ports:
+      - "4200:80"
+    networks:
+      - alpaca-network
+    depends_on:
+      - net-backend
+    restart: always
+
+  net-backend:
+    image: veryo/api:latest
+    container_name: back
+    ports:
+      - "5087:8080"
+    networks:
+      - alpaca-network
+    volumes:
+      - ./Api.db:/app/Api.db  
+    environment:
+      - ConnectionStrings__DefaultConnection=Data Source=/app/Api.db
+      
+    restart: always
+
+networks:
+  alpaca-network:
+    driver: bridge
